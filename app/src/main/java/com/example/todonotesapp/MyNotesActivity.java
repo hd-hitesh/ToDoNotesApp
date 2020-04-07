@@ -4,7 +4,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,18 +21,17 @@ public class MyNotesActivity extends AppCompatActivity {
     String fullName;
     FloatingActionButton fabAddNotes;
     TextView textViewTitle, textViewDescription;
+    SharedPreferences sharedPreferences;
+    String TAG = "MyNotesActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_notes);
-        fabAddNotes = findViewById(R.id.fabAddNotes);
-        textViewTitle = findViewById(R.id.textViewTitle);
-        textViewDescription = findViewById(R.id.textViewDescription);
 
-        Intent intent = getIntent();
-        intent.getStringExtra("full_name");
-        fullName = intent.getStringExtra("full_name");
+        bindView();
+        setUpSharedPreference();
+        getIntentData();
 
         fabAddNotes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +43,26 @@ public class MyNotesActivity extends AppCompatActivity {
 
        // Log.d("MyNotesActivity",fullName);
         getSupportActionBar().setTitle(fullName);
+
+    }
+
+    private void setUpSharedPreference() {
+        sharedPreferences = getSharedPreferences(PrefConstant.SHARED_PREFERENCE_NAME,MODE_PRIVATE);
+    }
+
+    private void getIntentData() {
+        Intent intent = getIntent();
+        fullName = intent.getStringExtra(AppConstant.FULL_NAME);
+        if(TextUtils.isEmpty(fullName)){
+            fullName = sharedPreferences.getString(PrefConstant.FULL_NAME,"");
+            Log.d(TAG,fullName);
+        }
+    }
+
+    private void bindView() {
+        fabAddNotes = findViewById(R.id.fabAddNotes);
+        textViewTitle = findViewById(R.id.textViewTitle);
+        textViewDescription = findViewById(R.id.textViewDescription);
 
     }
 
