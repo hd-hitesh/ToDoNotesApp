@@ -2,6 +2,8 @@ package com.example.todonotesapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,16 +15,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.todonotesapp.Adapter.NotesAdapter;
+import com.example.todonotesapp.Model.Notes;
+import com.example.todonotesapp.clickListeners.ItemClickListeners;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 public class MyNotesActivity extends AppCompatActivity {
 
     String fullName;
     FloatingActionButton fabAddNotes;
-    TextView textViewTitle, textViewDescription;
     SharedPreferences sharedPreferences;
     String TAG = "MyNotesActivity";
+    RecyclerView recyclerViewNotes;
+    ArrayList<Notes> notesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,7 @@ public class MyNotesActivity extends AppCompatActivity {
 
     private void setUpSharedPreference() {
         sharedPreferences = getSharedPreferences(PrefConstant.SHARED_PREFERENCE_NAME,MODE_PRIVATE);
+        recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
     }
 
     private void getIntentData() {
@@ -61,13 +71,13 @@ public class MyNotesActivity extends AppCompatActivity {
 
     private void bindView() {
         fabAddNotes = findViewById(R.id.fabAddNotes);
-        textViewTitle = findViewById(R.id.textViewTitle);
-        textViewDescription = findViewById(R.id.textViewDescription);
+
 
     }
 
     private void setUpDialogBox() {
         View view = LayoutInflater.from(MyNotesActivity.this).inflate(R.layout.add_notes_dialog_layout,null);
+
         final EditText editTextTitle = view.findViewById(R.id.editTextTitle);
         final EditText editTextDescription = view.findViewById(R.id.editTextDesciption);
         Button buttonSubmit = view.findViewById(R.id.buttonSubmit);
@@ -80,12 +90,41 @@ public class MyNotesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                textViewTitle.setText(editTextTitle.getText().toString());
-                textViewDescription.setText(editTextDescription.getText().toString());
-                dialog.hide();
+                String title = editTextTitle.getText().toString();
+                String description = editTextDescription.getText().toString();
 
+                if (!TextUtils.isEmpty() && !TextUtils.isEmpty(description)){
+                    Notes notes = new Notes();
+                    notes.setTille(title);
+                    notes.setDescription(description);
+                    notesList.add(notes);
+                }
+                else
+                {
+                    Toast.makeText(MyNotesActivity.this,"Empty",Toast.LENGTH_SHORT).show();
+                }
+                dialog.hide();
+                setUpRecyclerView();
             }
         });
         dialog.show();
+    }
+
+    private void setUpRecyclerView() {
+        ItemClickListeners itemClickListeners = new ItemClickListeners() {
+            @Override
+            public void onClick(Notes notes) {
+                Intent intent = new Intent(MyNotesActivity.this,DetailActivity.class);
+                intent.putExtra(AppConstant.TITLE,notes.getTille());
+                intent.putExtra(AppConstant.DESCRIPTION,notes.getTille());
+                startActivity(intent);
+            }
+        };
+
+        NotesAdapter notesAdapter = new NotesAdapter(notesList,itemClickListeners);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MyNotesActivity.this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerViewNotes.setLayoutManager(linearLayoutManager);
+        recyclerViewNotes.setAdapter(notesAdapter);
     }
 }
