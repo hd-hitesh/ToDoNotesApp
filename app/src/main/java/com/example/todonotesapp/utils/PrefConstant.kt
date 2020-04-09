@@ -1,4 +1,4 @@
-package com.example.todonotesapp
+package com.example.todonotesapp.utils
 
 object PrefConstant {
     val SHARED_PREFERENCE_NAME = "notes_app_pref"
