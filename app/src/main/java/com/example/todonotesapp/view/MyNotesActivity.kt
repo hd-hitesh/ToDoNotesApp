@@ -1,5 +1,6 @@
 package com.example.todonotesapp.view
 
+import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.todonotesapp.AddNotesActivity
 import com.example.todonotesapp.NotesApp
 import com.example.todonotesapp.utils.AppConstant
 import com.example.todonotesapp.utils.PrefConstant
@@ -33,6 +35,7 @@ class MyNotesActivity : AppCompatActivity() {
      lateinit var sharedPreferences: SharedPreferences
      val TAG = "MyNotesActivity"
      lateinit var recyclerViewNotes: RecyclerView
+    val ADD_NOTES_CODE = 100
      var notesList = ArrayList<Notes>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +50,9 @@ class MyNotesActivity : AppCompatActivity() {
 
         fabAddNotes.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
-                setUpDialogBox()
+               // setUpDialogBox()
+                val intent = Intent(this@MyNotesActivity,AddNotesActivity::class.java)
+                startActivityForResult(intent,ADD_NOTES_CODE)
             }
         })
 
@@ -141,4 +146,5 @@ class MyNotesActivity : AppCompatActivity() {
         recyclerViewNotes.layoutManager = linearLayoutManager
         recyclerViewNotes.adapter = notesAdapter
     }
+
 }
