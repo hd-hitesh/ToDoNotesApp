@@ -104,7 +104,10 @@ class AddNotesActivity : AppCompatActivity() {
                 var photoFile: File? = null
                 photoFile = createImage()
                 if (photoFile !=null){
-                    val photoURI = FileProvider.getUriForFile(this@AddNotesActivity,BuildConfig.APPLICATION_ID+".provider",photoFile)
+                    val photoURI = FileProvider.getUriForFile(this@AddNotesActivity,
+                            BuildConfig.APPLICATION_ID+ ".provider" ,
+                            photoFile)
+
                     picturePath = photoFile.absolutePath
                     Log.d(TAG,picturePath)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI)
