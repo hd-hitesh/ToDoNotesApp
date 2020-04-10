@@ -21,6 +21,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.example.todonotesapp.utils.AppConstant
+import kotlinx.android.synthetic.main.activity_add_notes.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,6 +57,18 @@ class AddNotesActivity : AppCompatActivity() {
                 setUpDialog()
                 }
             }
+        })
+
+        buttonSubmit.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                val intent = Intent()
+                intent.putExtra(AppConstant.TITLE,editTextTitle.text.toString())
+                intent.putExtra(AppConstant.DESCRIPTION,editTextdescription.text.toString())
+                intent.putExtra(AppConstant.IMAGE_PATH,picturePath)
+                setResult(Activity.RESULT_OK,intent)
+                finish()
+            }
+
         })
     }
 
