@@ -37,6 +37,7 @@ class AddNotesActivity : AppCompatActivity() {
     val REQUEST_CODE_CAMERA = 1
     val MY_PERMISSION_CODE =  124
     var picturePath = ""
+    lateinit var imageLocation: File
     val TAG = "AddNotesActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,14 +105,27 @@ class AddNotesActivity : AppCompatActivity() {
                 var photoFile: File? = null
                 photoFile = createImage()
                 if (photoFile !=null){
+
                     val photoURI = FileProvider.getUriForFile(this@AddNotesActivity,
-                            BuildConfig.APPLICATION_ID+ ".provider" ,
+                            BuildConfig.APPLICATION_ID + ".provider",
                             photoFile)
 
+                    imageLocation = photoFile
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
+                    dialog.hide()
+
+//                    val photoURI = FileProvider.getUriForFile(this@AddNotesActivity,
+//                            BuildConfig.APPLICATION_ID + ".provider" ,
+//                            photoFile)
+//
                     picturePath = photoFile.absolutePath
-                    Log.d(TAG,picturePath)
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI)
-                    startActivityForResult(intent,REQUEST_CODE_CAMERA)
+//                    Log.d("123456789",picturePath)
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI)
+//                    Log.d("123456789","Above activity start")
+//                    startActivityForResult(intent,REQUEST_CODE_CAMERA)
+//                    Log.d("123456789","Below activity start")
+
                 }
             }
         })
