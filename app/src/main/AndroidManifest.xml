@@ -25,7 +25,7 @@
                 android:resource="@xml/provider_path" />
         </provider>
 
-        <activity android:name=".AddNotesActivity"></activity>
+        <activity android:name=".view.AddNotesActivity"></activity>
         <activity android:name=".view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

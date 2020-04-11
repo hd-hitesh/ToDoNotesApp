@@ -1,10 +1,8 @@
-package com.example.todonotesapp
+package com.example.todonotesapp.view
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -21,12 +19,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.example.todonotesapp.BuildConfig
+import com.example.todonotesapp.R
 import com.example.todonotesapp.utils.AppConstant
-import kotlinx.android.synthetic.main.activity_add_notes.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.jar.Manifest
 import kotlin.collections.ArrayList
 
 class AddNotesActivity : AppCompatActivity() {
