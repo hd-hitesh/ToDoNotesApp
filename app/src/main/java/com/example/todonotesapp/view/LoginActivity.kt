@@ -13,14 +13,13 @@ import android.widget.Toast
 import com.example.todonotesapp.utils.AppConstant
 import com.example.todonotesapp.utils.PrefConstant
 import com.example.todonotesapp.R
+import com.example.todonotesapp.utils.StoreSession
 
 class LoginActivity : AppCompatActivity() {
 
      lateinit var editTextFullName: EditText
      lateinit var editTextUsername: EditText
      lateinit var buttonLogin: Button
-     lateinit var sharedPreferences: SharedPreferences
-     lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,18 +48,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun saveFullName(fullName: String) {
-        editor = sharedPreferences.edit()
-        editor.putString(PrefConstant.FULL_NAME, fullName)
-        editor.apply()
+        StoreSession.write(PrefConstant.FULL_NAME, fullName)
     }
 
     private fun saveLoginStatus() {
-        editor = sharedPreferences.edit()
-        editor.putBoolean(PrefConstant.IS_LOGGED_IN, true)
-        editor.apply()
+        StoreSession.write(PrefConstant.IS_LOGGED_IN, true)
     }
 
     private fun setUpSharedPreferences() {
-        sharedPreferences = getSharedPreferences(PrefConstant.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
+        StoreSession.init(this)
     }
 }

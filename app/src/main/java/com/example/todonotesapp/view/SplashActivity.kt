@@ -9,12 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.todonotesapp.utils.PrefConstant
 import com.example.todonotesapp.R
 import com.example.todonotesapp.onboarding.OnBoardingActivity
+import com.example.todonotesapp.utils.StoreSession
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 
 class SplashActivity : AppCompatActivity() {
-
-    lateinit var sharedPreferences : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,19 +41,18 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun setUpSharedPreferences() {
-        sharedPreferences = getSharedPreferences(PrefConstant.SHARED_PREFERENCE_NAME,MODE_PRIVATE)
-
+             StoreSession.init(this)
     }
 
     private fun checkLoginStatus() {
-        val isLoggedIn = sharedPreferences.getBoolean(PrefConstant.IS_LOGGED_IN, false)
-        val isBoardingSuccess = sharedPreferences.getBoolean(PrefConstant.ON_BOARDED_SUCCESSFULLY,false)
+        val isLoggedIn = StoreSession.read(PrefConstant.IS_LOGGED_IN)
+        val isBoardingSuccess = StoreSession.read(PrefConstant.ON_BOARDED_SUCCESSFULLY)
 
-        if (isLoggedIn) {
+        if (isLoggedIn!!) {
             val intent = Intent(this@SplashActivity, MyNotesActivity::class.java)
             startActivity(intent)
         } else {
-            if (isBoardingSuccess) {
+            if (isBoardingSuccess!!) {
                 val intent = Intent(this@SplashActivity, LoginActivity::class.java)
                 startActivity(intent)
             } else {

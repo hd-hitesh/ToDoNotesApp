@@ -27,6 +27,7 @@ import com.example.todonotesapp.R
 import com.example.todonotesapp.adapter.NotesAdapter
 import com.example.todonotesapp.clickListeners.ItemClickListeners
 import com.example.todonotesapp.db.Notes
+import com.example.todonotesapp.utils.StoreSession
 import com.example.todonotesapp.workmanager.MyWorker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.sql.Time
@@ -38,7 +39,6 @@ class MyNotesActivity : AppCompatActivity() {
 
      lateinit var fullName : String
      lateinit var fabAddNotes: FloatingActionButton
-     lateinit var sharedPreferences: SharedPreferences
      val TAG = "MyNotesActivity"
      lateinit var recyclerViewNotes: RecyclerView
     val ADD_NOTES_CODE = 100
@@ -51,7 +51,6 @@ class MyNotesActivity : AppCompatActivity() {
         bindView()
         setUpSharedPreference()
         getIntentData()
-
         getDataFromDataBase()
 
         fabAddNotes.setOnClickListener(object : View.OnClickListener{
@@ -85,14 +84,14 @@ class MyNotesActivity : AppCompatActivity() {
     }
 
     private fun setUpSharedPreference() {
-        sharedPreferences = getSharedPreferences(PrefConstant.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
+        StoreSession.init(this)
     }
 
     private fun getIntentData() {
         val intent = intent
         fullName = intent.getStringExtra(AppConstant.FULL_NAME)?:""
         if (fullName.isEmpty()) {
-            fullName = sharedPreferences.getString(PrefConstant.FULL_NAME,"")?:""
+            fullName = StoreSession.readString(PrefConstant.FULL_NAME)!!
             Log.d(TAG, fullName)
         }
     }
@@ -104,7 +103,6 @@ class MyNotesActivity : AppCompatActivity() {
 
     private fun setUpDialogBox() {
         val view = LayoutInflater.from(this@MyNotesActivity).inflate(R.layout.add_notes_dialog_layout, null)
-
         val editTextTitle = view.findViewById<EditText>(R.id.editTextTitle)
         val editTextDescription = view.findViewById<EditText>(R.id.editTextDesciption)
         val buttonSubmit = view.findViewById<Button>(R.id.buttonSubmit)
@@ -163,14 +161,12 @@ class MyNotesActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d("00000","HELLLLLOOOOO")
 //        if(resultCode ==ADD_NOTES_CODE){
             val title = data?.getStringExtra(AppConstant.TITLE)
             val description = data?.getStringExtra(AppConstant.DESCRIPTION)
             val imagePath = data?.getStringExtra(AppConstant.IMAGE_PATH)
 
             val notes = Notes(title = title!!,description = description!!, imagePath = imagePath!!, isTaskCompleted = false)
-            Log.d("00000","HELLLLLOOOOO"+title+description+imagePath)
             addNotesToDb(notes)
             notesList.add(notes)
             recyclerViewNotes.adapter?.notifyItemChanged(notesList.size-1)
