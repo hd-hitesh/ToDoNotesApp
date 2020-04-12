@@ -1,26 +1,44 @@
 package com.example.todonotesapp.view
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.Animation.AnimationListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.todonotesapp.utils.PrefConstant
 import com.example.todonotesapp.R
 import com.example.todonotesapp.onboarding.OnBoardingActivity
+import com.example.todonotesapp.utils.PrefConstant
 import com.example.todonotesapp.utils.StoreSession
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
+import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        setUpSharedPreferences()
-        checkLoginStatus()
-        getFCMToken()
+        ////////
+        val anim = android.view.animation.AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in)
+        anim.setAnimationListener(object : Animation.AnimationListener{
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                setUpSharedPreferences()
+                checkLoginStatus()
+                getFCMToken()
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+        })
+        ////////
+        imageView3.startAnimation(anim)
+        textView2.startAnimation(anim)
     }
 
     private fun getFCMToken() {
