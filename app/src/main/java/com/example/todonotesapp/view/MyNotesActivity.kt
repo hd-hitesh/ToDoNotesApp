@@ -161,7 +161,8 @@ class MyNotesActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-//        if(resultCode ==ADD_NOTES_CODE){
+       // if(resultCode ==ADD_NOTES_CODE && resultCode == Activity.RUSULT_OK){
+        Log.d("Ress","+++"+resultCode.toString()+"+++")
             val title = data?.getStringExtra(AppConstant.TITLE)
             val description = data?.getStringExtra(AppConstant.DESCRIPTION)
             val imagePath = data?.getStringExtra(AppConstant.IMAGE_PATH)
@@ -170,7 +171,7 @@ class MyNotesActivity : AppCompatActivity() {
             addNotesToDb(notes)
             notesList.add(notes)
             recyclerViewNotes.adapter?.notifyItemChanged(notesList.size-1)
-        //}
+       // }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

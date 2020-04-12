@@ -70,6 +70,10 @@ class AddNotesActivity : AppCompatActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
     private fun checkAndRequestPermission(): Boolean {
         val cameraPermission = ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA)
         val storagePermission = ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE)
