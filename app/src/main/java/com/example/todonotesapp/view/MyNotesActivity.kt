@@ -186,6 +186,13 @@ class MyNotesActivity : AppCompatActivity() {
             val  intent = Intent(this@MyNotesActivity , BlogActivity::class.java)
             startActivity(intent)
         }
+        if (item.itemId == R.id.logout){
+            Log.d(TAG,"clicked")
+            StoreSession.init(this)
+            StoreSession.write(PrefConstant.IS_LOGGED_IN,false)
+            val  intent = Intent(this@MyNotesActivity , LoginActivity::class.java)
+            startActivity(intent)
+        }
         return super.onOptionsItemSelected(item)
     }
 }
